@@ -15,8 +15,7 @@ def remove_bg():
     try:
         output_bytes = remove(input_bytes)
     except Exception as e:
-        print(f"[ERROR] Fallo al procesar imagen: {str(e)}")
-        return f"❌ Error al procesar la imagen: {str(e)}", 500
+        return f"Error: {str(e)}", 500
 
     return send_file(
         io.BytesIO(output_bytes),
@@ -25,4 +24,7 @@ def remove_bg():
     )
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8000)
+    import os
+    port = int(os.environ.get("PORT", 8000))
+    app.run(host='0.0.0.0', port=port)
+
