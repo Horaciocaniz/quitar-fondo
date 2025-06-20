@@ -1,6 +1,5 @@
 from flask import Flask, request, send_file
 from rembg import remove
-from PIL import Image
 import io
 
 app = Flask(__name__)
@@ -12,7 +11,12 @@ def remove_bg():
 
     file = request.files['image']
     input_bytes = file.read()
-    output_bytes = remove(input_bytes)
+
+    try:
+        output_bytes = remove(input_bytes)
+    except Exception as e:
+        print(f"[ERROR] Fallo al procesar imagen: {str(e)}")
+        return f"❌ Error al procesar la imagen: {str(e)}", 500
 
     return send_file(
         io.BytesIO(output_bytes),
